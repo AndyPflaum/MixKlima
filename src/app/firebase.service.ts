@@ -7,8 +7,8 @@ import {
   doc,
   getDoc,
   query,
-  onSnapshot,where ,
-  setDoc     
+  onSnapshot, where,
+  setDoc
 } from '@angular/fire/firestore';
 
 import { CustomerDate } from '../model/customerData.class';
@@ -34,17 +34,17 @@ export class FirebaseService {
   }
 
   async saveAirConditioning(aircon: any): Promise<void> {
-  const collectionRef = this.airConditionInFirebase;
+    const collectionRef = this.airConditionInFirebase;
 
-  const airconData = {
-    ...aircon,
-    createdAt: new Date()
-  };
+    const airconData = {
+      ...aircon,
+      createdAt: new Date()
+    };
 
-  await addDoc(collectionRef, airconData);
-}
+    await addDoc(collectionRef, airconData);
+  }
 
-async isAirconNameTaken(name: string): Promise<boolean> {
+  async isAirconNameTaken(name: string): Promise<boolean> {
     const colRef = collection(this.firestore, 'airConditioning');
     const q = query(colRef, where('name', '==', name));
     const snapshot = await getDocs(q);
@@ -52,22 +52,22 @@ async isAirconNameTaken(name: string): Promise<boolean> {
   }
 
   async getAirconByName(name: string): Promise<any | null> {
-  const colRef = collection(this.firestore, 'airConditioning');
-  const q = query(colRef, where('name', '==', name));
-  const snapshot = await getDocs(q);
+    const colRef = collection(this.firestore, 'airConditioning');
+    const q = query(colRef, where('name', '==', name));
+    const snapshot = await getDocs(q);
 
-  if (!snapshot.empty) {
-    const docSnap = snapshot.docs[0];
-    return { id: docSnap.id, ...docSnap.data() };
+    if (!snapshot.empty) {
+      const docSnap = snapshot.docs[0];
+      return { id: docSnap.id, ...docSnap.data() };
+    }
+
+    return null;
   }
 
-  return null;
-}
-
-async updateAirconModels(id: string, models: string[]): Promise<void> {
-  const docRef = doc(this.firestore, 'airConditioning', id);
-  await setDoc(docRef, { models }, { merge: true });
-}
+  async updateAirconModels(id: string, models: string[]): Promise<void> {
+    const docRef = doc(this.firestore, 'airConditioning', id);
+    await setDoc(docRef, { models }, { merge: true });
+  }
 
 
 
@@ -97,23 +97,23 @@ async updateAirconModels(id: string, models: string[]): Promise<void> {
     return list;
   }
 
-async getOrderById(id: string): Promise<any> {
-  const docRef = doc(this.firestore, 'auftraege', id);
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    const data = docSnap.data();
-    
-    return {
-      id: docSnap.id,
-      ...data,
-      createdAtDate: data['createdAt']?.seconds
-        ? new Date(data['createdAt'].seconds * 1000)
-        : null
-    };
-  } else {
-    throw new Error('Dokument nicht gefunden');
+  async getOrderById(id: string): Promise<any> {
+    const docRef = doc(this.firestore, 'auftraege', id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+
+      return {
+        id: docSnap.id,
+        ...data,
+        createdAtDate: data['createdAt']?.seconds
+          ? new Date(data['createdAt'].seconds * 1000)
+          : null
+      };
+    } else {
+      throw new Error('Dokument nicht gefunden');
+    }
   }
-}
 
 
 

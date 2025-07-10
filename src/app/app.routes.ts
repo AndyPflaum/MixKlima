@@ -9,8 +9,10 @@ export const routes: Routes = [
         path: '',
         component: MainComponent,
         children: [
-            { path: '', component: AllOrdersComponent }, // Start
-            { path: 'auftrag/:id', component: SelectedOrderComponent }
+            // { path: '', component: AllOrdersComponent }, // Start
+            { path: 'auftrag/:id', component: SelectedOrderComponent },
+            { path: '', component: SelectedOrderComponent },
+
         ]
     }
 ];

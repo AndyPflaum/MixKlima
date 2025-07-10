@@ -22,8 +22,7 @@ export class SelectedOrderComponent implements OnInit {
     if (id) {
       this.firebase.getOrderById(id).then(order => {
         this.selectedOrder = order;
-      }).catch(err => {
-        console.error('Fehler beim Laden:', err);
+      }).catch(() => {
         this.selectedOrder = null;
       });
     } else {

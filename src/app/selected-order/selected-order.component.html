@@ -1,17 +1,14 @@
-<div class="order" *ngIf="selectedOrder?.id; else noOrder">
+<div class="order" *ngIf="selectedOrder; else noOrder">
   <h1 class="color-blue-and-red">Auftrag Details</h1>
-  <div>
-    <p><strong>Name: </strong>{{ selectedOrder.name }}</p>
-    <p><strong>Vorname: </strong> {{ selectedOrder.vorname }}</p>
-    <p><strong>Email: </strong> {{ selectedOrder.email }}</p>
-    <p><strong>Erstellt am:</strong> {{ selectedOrder.createdAtDate | date: 'dd-MM-yy, HH:mm' }} Uhr</p>
-    <p><strong></strong> </p>
-    <p><strong></strong> </p>
-    <p><strong></strong> </p>
-  </div>
+  <div class="oder-list">
+    <p><strong>Name:</strong> {{ selectedOrder.name }}</p>
+    <p><strong>Vorname:</strong> {{ selectedOrder.vorname }}</p>
+    <p><strong>Email:</strong> {{ selectedOrder.email }}</p>
+    <p><strong>Erstellt am:</strong> {{ selectedOrder.createdAtDate | date:'dd-MM-yy, HH:mm' }}</p>
 
+  </div>
 </div>
 
 <ng-template #noOrder>
-  <p>Kein Auftrag ausgewählt</p>
+  <p class="no-order-text">Kein Auftrag ausgewählt</p>
 </ng-template>

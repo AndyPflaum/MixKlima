@@ -13,24 +13,19 @@
   </div>
 
   <!-- Auftrag-Liste -->
-<div
-  *ngFor="let customer of orders"
-  class="auftrag"
-  [ngClass]="{
+  <div *ngFor="let customer of orders" class="auftrag" [ngClass]="{
     'ungelesen': !customer.read,
     'gelesen': customer.read,
     'selected': customer.id === selectedOrderId
-  }"
-  (click)="openDetails(customer)"
->
-  <p><strong>Name:</strong> {{ customer.name }}</p>
-  <p><strong>Vorname:</strong> {{ customer.vorname }}</p>
-  <p><strong>Email:</strong> {{ customer.email }}</p>
-  <p>
-    <strong>Erstellt am:</strong>
-    {{ customer.createdAtDate | date: 'dd-MM-yy, HH:mm' }} Uhr
-  </p>
-  <p><strong>Vom Büro gelesen:</strong> {{ customer.read ? 'Ja' : 'Nein' }}</p>
-</div>
+  }" (click)="openDetails(customer)">
+    <p><strong>Name:</strong> {{ customer.name }}</p>
+    <p><strong>Vorname:</strong> {{ customer.vorname }}</p>
+    <p><strong>Email:</strong> {{ customer.email }}</p>
+    <p>
+      <strong>Erstellt am:</strong>
+      {{ customer.createdAtDate | date: 'dd-MM-yy, HH:mm' }} Uhr
+    </p>
+    <p><strong>Vom Büro gelesen:</strong> {{ customer.read ? 'Ja' : 'Nein' }}</p>
+  </div>
 
 </section>

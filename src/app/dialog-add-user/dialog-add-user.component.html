@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Neuen Kunden anlegen</h2>
+<mat-dialog-content>
+
+  <mat-form-field>
+    <mat-label>Nachname</mat-label>
+    <input matInput [(ngModel)]="customerDate.name" placeholder="z. B. Müller" name="name" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Vorname</mat-label>
+    <input matInput [(ngModel)]="customerDate.vorname" name="vorname" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput [(ngModel)]="customerDate.email" name="email" />
+  </mat-form-field>
+
+  <!-- <button mat-button color="primary" (click)="addModel()">+ Modell hinzufügen</button> -->
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Abbrechen</button>
+  <button mat-button color="accent" (click)="save()">Speichern</button>
+</mat-dialog-actions>

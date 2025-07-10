@@ -1,0 +1,47 @@
+section {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(253, 247, 247);
+
+    app-header {
+        height: 80px; // z. B. feste Höhe für den Header
+        flex-shrink: 0;
+    }
+
+    .main-contant {
+        flex: 1; // nimmt die restliche Höhe ein
+        display: flex;
+        overflow: hidden;
+
+        .side-opened-orders,
+        .open-orders,
+        .orders {
+            height: 100%;
+            padding: 20px;
+
+        }
+
+        .side-opened-orders {
+            width: 10%;
+            background-color: lightgray;
+        }
+
+        .open-orders {
+            width: 65%;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orders {
+            width: 50%;
+            background-color: lightgrey;
+
+
+
+        }
+    }
+}

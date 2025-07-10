@@ -1,0 +1,60 @@
+section {
+    height: 80px;
+    width: 100%;
+    margin: 0px;
+    display: flex;
+    align-items: center;
+
+    .name {
+        height: 80px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        h1 {
+            font-size: 35px;
+        }
+
+        img {
+            height: 60px;
+            filter: brightness(0) invert(1);
+        }
+
+        .header-right {
+            display: flex;
+            gap: 50px;
+            font-size: 20px;
+            font-weight: 700;
+
+            .menu {
+                position: relative;
+                padding: 10px 15px;
+
+                &:hover {
+                    cursor: pointer;
+                }
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    height: 3px;
+                    width: 100%;
+                    background-color: white;
+                    transform: scaleX(0); // Start: unsichtbar
+                    transform-origin: center; // Mittelpunkt ist Startpunkt
+                    transition: transform 0.3s ease; // Animation
+                }
+
+                &:hover::after {
+                    transform: scaleX(1); // Skaliert auf volle Breite von innen nach außen
+                }
+            }
+
+
+        }
+
+    }
+}

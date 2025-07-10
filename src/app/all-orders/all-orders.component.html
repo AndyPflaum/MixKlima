@@ -1,0 +1,36 @@
+<section class="auftrag-container">
+  <h1>Alle Aufträge</h1>
+
+  <!-- Auswahl wie viele Aufträge angezeigt werden -->
+  <div class="anzahl-auswahl">
+    <label for="anzahl">Anzahl anzeigen:</label>
+    <select id="anzahl" [(ngModel)]="visibleCount" (change)="updateVisibleOrders()">
+      <option [value]="5">5</option>
+      <option [value]="10">10</option>
+      <option [value]="25">25</option>
+      <option [value]="ordersOriginal.length">Alle</option>
+    </select>
+  </div>
+
+  <!-- Auftrag-Liste -->
+<div
+  *ngFor="let customer of orders"
+  class="auftrag"
+  [ngClass]="{
+    'ungelesen': !customer.read,
+    'gelesen': customer.read,
+    'selected': customer.id === selectedOrderId
+  }"
+  (click)="openDetails(customer)"
+>
+  <p><strong>Name:</strong> {{ customer.name }}</p>
+  <p><strong>Vorname:</strong> {{ customer.vorname }}</p>
+  <p><strong>Email:</strong> {{ customer.email }}</p>
+  <p>
+    <strong>Erstellt am:</strong>
+    {{ customer.createdAtDate | date: 'dd-MM-yy, HH:mm' }} Uhr
+  </p>
+  <p><strong>Vom Büro gelesen:</strong> {{ customer.read ? 'Ja' : 'Nein' }}</p>
+</div>
+
+</section>

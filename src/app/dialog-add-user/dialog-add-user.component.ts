@@ -36,13 +36,13 @@ export class DialogAddUserComponent {
     this.dialogRef.close();
   }
 
-  addModel() {
-    this.models.push(''); // Neues leeres Input-Feld hinzufügen
-  }
+  // addModel() {
+  //   this.models.push(''); // Neues leeres Input-Feld hinzufügen
+  // }
 
-  removeModel(index: number) {
-    this.models.splice(index, 1); // Optional: Entfernen eines Feldes
-  }
+  // removeModel(index: number) {
+  //   this.models.splice(index, 1); // Optional: Entfernen eines Feldes
+  // }
 
   async save() {
     try {

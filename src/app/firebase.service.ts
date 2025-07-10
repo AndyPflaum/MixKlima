@@ -7,7 +7,8 @@ import {
   doc,
   getDoc,
   query,
-  onSnapshot
+  onSnapshot,where ,
+  setDoc     
 } from '@angular/fire/firestore';
 
 import { CustomerDate } from '../model/customerData.class';
@@ -31,6 +32,44 @@ export class FirebaseService {
     const collectionRef = this.ordersInFirebase;
     await addDoc(collectionRef, customerObj);
   }
+
+  async saveAirConditioning(aircon: any): Promise<void> {
+  const collectionRef = this.airConditionInFirebase;
+
+  const airconData = {
+    ...aircon,
+    createdAt: new Date()
+  };
+
+  await addDoc(collectionRef, airconData);
+}
+
+async isAirconNameTaken(name: string): Promise<boolean> {
+    const colRef = collection(this.firestore, 'airConditioning');
+    const q = query(colRef, where('name', '==', name));
+    const snapshot = await getDocs(q);
+    return !snapshot.empty; // true = Name schon vorhanden
+  }
+
+  async getAirconByName(name: string): Promise<any | null> {
+  const colRef = collection(this.firestore, 'airConditioning');
+  const q = query(colRef, where('name', '==', name));
+  const snapshot = await getDocs(q);
+
+  if (!snapshot.empty) {
+    const docSnap = snapshot.docs[0];
+    return { id: docSnap.id, ...docSnap.data() };
+  }
+
+  return null;
+}
+
+async updateAirconModels(id: string, models: string[]): Promise<void> {
+  const docRef = doc(this.firestore, 'airConditioning', id);
+  await setDoc(docRef, { models }, { merge: true });
+}
+
+
 
   listenToOrders(callback: (orders: any[]) => void): () => void {
     const colRef = this.ordersInFirebase;

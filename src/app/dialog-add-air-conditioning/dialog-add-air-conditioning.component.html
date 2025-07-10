@@ -1,22 +1,29 @@
 <h2 mat-dialog-title>Neue Klimaanlage einfügen</h2>
+
 <mat-dialog-content>
 
+<form #airconForm="ngForm">
   <mat-form-field>
     <mat-label>Klimaanlage</mat-label>
-    <input matInput  placeholder="z. B. Mitsubishi" name="name" />
+    <input matInput placeholder="z. B. Mitsubishi" [(ngModel)]="aircon.name" name="airconName" />
   </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Model</mat-label>
-    <input matInput name="vorname" />
-  </mat-form-field>
+<div *ngFor="let model of aircon.models; let i = index; trackBy: trackByIndex">
+    <mat-form-field>
+      <mat-label>Modell #{{ i + 1 }}</mat-label>
+      <input matInput [(ngModel)]="aircon.models[i]" name="model{{i}}" />
+    </mat-form-field>
+  </div>
+</form>
 
- 
 
-  <!-- <button mat-button color="primary" (click)="addModel()">+ Modell hinzufügen</button> -->
+  <button mat-mini-fab color="primary" (click)="addModel()" matTooltip="Modell hinzufügen">
+    <mat-icon>add</mat-icon>
+  </button>
+
 </mat-dialog-content>
 
-<mat-dialog-actions>
+<mat-dialog-actions align="end">
   <button mat-button (click)="onNoClick()">Abbrechen</button>
   <button mat-button color="accent" (click)="save()">Speichern</button>
 </mat-dialog-actions>

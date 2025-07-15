@@ -17,45 +17,71 @@ import { CommonModule } from '@angular/common';
 import { CustomerDate } from '../../model/customerData.class';
 import { FirebaseService } from '../firebase.service';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectChange } from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
+
+
 
 @Component({
   selector: 'app-dialog-add-user',
   standalone: true,
-  imports: [FormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatDialogActions, MatDialogContent, MatIconModule, CommonModule, MatDialogModule],
+  imports: [FormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatDialogActions, MatDialogContent, MatIconModule, CommonModule, MatDialogModule, MatSelectModule],
   templateUrl: './dialog-add-user.component.html',
   styleUrl: './dialog-add-user.component.scss'
 })
 export class DialogAddUserComponent {
   readonly dialogRef = inject(MatDialogRef<DialogAddUserComponent>);
   customerDate = new CustomerDate();
-  models: string[] = [''];
+  aircons: any[] = []; // Liste aller Klimaanlagen aus Firebase
+  selectedAirconName = ''; // Aktuell gewählter Name
+  models: string[] = [];   // Modelle zur gewählten Klimaanlage
+  selectedModel: string = '';
 
   constructor(private firebaseService: FirebaseService) { }
 
-  onNoClick(): void {
-    this.dialogRef.close();
+  ngOnInit() {
+    this.loadAircons();
+
   }
 
-  // addModel() {
-  //   this.models.push(''); // Neues leeres Input-Feld hinzufügen
-  // }
+  onNoClick(): void {
+    this.dialogRef.close();
 
-  // removeModel(index: number) {
-  //   this.models.splice(index, 1); // Optional: Entfernen eines Feldes
-  // }
-
+  }
   async save() {
+    this.customerDate.brand = this.selectedAirconName;
+    this.customerDate.model = this.selectedModel;
+
     try {
-      // Optional: Modelle (z. B. als zusätzliche Daten) anhängen
-      // this.customer.models = this.models;
-
       await this.firebaseService.saveCustomer(this.customerDate);
-      console.log('Kunde erfolgreich gespeichert.', this.customerDate);
-
-      this.dialogRef.close(true); // Dialog schließen, true = Erfolg
+      this.dialogRef.close(true);
     } catch (error) {
       console.error('Fehler beim Speichern des Kunden:', error);
     }
   }
+
+
+
+
+  capitalize(str: string): string {
+    if (!str) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
+
+  loadAircons() {
+    this.firebaseService.getAllAirConditionings().then(data => {
+      this.aircons = data;
+    }).catch(err => {
+      console.error('Fehler beim Laden der Klimaanlagen:', err);
+    });
+  }
+
+
+  onAirconSelected(event: MatSelectChange) {
+    const selectedName = event.value;
+    const found = this.aircons.find(a => a.name === selectedName);
+    this.models = found?.models || [];
+  }
+
 
 }

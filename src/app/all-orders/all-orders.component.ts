@@ -5,13 +5,15 @@ import { FormsModule } from '@angular/forms';
 import { FirebaseService } from '../firebase.service';
 import { SelectedOrderService } from '../selected-order.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @Component({
   selector: 'app-all-orders',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatIconModule, MatDividerModule, MatButtonModule],
   templateUrl: './all-orders.component.html',
   styleUrls: ['./all-orders.component.scss']
 })
@@ -19,7 +21,6 @@ export class AllOrdersComponent implements OnInit {
   orders: any[] = [];
   ordersOriginal: any[] = [];
   visibleCount = 5;
-  private ordersSub!: Subscription;
   selectedOrderId: string | null = null;
 
   unsubscribeFn: () => void = () => { };
@@ -59,11 +60,32 @@ export class AllOrdersComponent implements OnInit {
       this.selectedOrderId = customer.id; // 👉 Hier speichern
       this.router.navigate(['/auftrag', customer.id]);
       this.selectedOrderService.setSelectedOrder(customer);
+      // Separat prüfen, ob gelöscht werden soll
+      this.handleGuestAutoDelete(customer);
     } else {
       console.warn('Keine ID vorhanden:', customer);
     }
   }
 
+  handleGuestAutoDelete(customer: any): void {
+    if (customer.guestLoggedIn) {
+      console.warn('Gastauftrag erkannt – wird in 5 Minuten gelöscht');
+
+      setTimeout(() => {
+        this.deleteGuestOrder(customer.id);
+      }, 5000); // 5 Minuten
+
+    }
+  }
+
+  deleteGuestOrder(orderId: string): void {
+    this.firebase.deleteOrder(orderId).then(() => {
+      console.log(`✅ Gastauftrag mit ID ${orderId} wurde gelöscht`);
+      this.updateVisibleOrders();
+    }).catch(err => {
+      console.error('Fehler beim Löschen des Gastauftrags:', err);
+    });
+  }
 
 
   updateVisibleOrders() {
@@ -73,6 +95,18 @@ export class AllOrdersComponent implements OnInit {
   ngOnDestroy(): void {
     this.unsubscribeFn();
   }
+
+deleteOrders(customer: any, event: MouseEvent) {
+  event.stopPropagation(); // Verhindert, dass openDetails() auch ausgeführt wird
+  if (confirm(`Möchtest du den Auftrag von ${customer.name} ${customer.vorname} wirklich löschen?`)) {
+    this.firebase.deleteOrder(customer.id).then(() => {
+      console.log('✅ Auftrag gelöscht:', customer.id);
+      this.updateVisibleOrders(); // falls notwendig
+    }).catch(err => {
+      console.error('Fehler beim Löschen des Auftrags:', err);
+    });
+  }
+}
 
 
 }

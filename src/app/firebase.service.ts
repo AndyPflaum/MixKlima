@@ -8,15 +8,15 @@ import {
   getDoc,
   query,
   onSnapshot, where,
-  setDoc
+  setDoc,deleteDoc
 } from '@angular/fire/firestore';
-
 import { CustomerDate } from '../model/customerData.class';
 
 
 @Injectable({
   providedIn: 'root',
 })
+
 export class FirebaseService {
   constructor(private firestore: Firestore) { }
 
@@ -69,8 +69,6 @@ export class FirebaseService {
     await setDoc(docRef, { models }, { merge: true });
   }
 
-
-
   listenToOrders(callback: (orders: any[]) => void): () => void {
     const colRef = this.ordersInFirebase;
     const q = query(colRef);
@@ -114,6 +112,25 @@ export class FirebaseService {
       throw new Error('Dokument nicht gefunden');
     }
   }
+
+  async getAllAirConditionings(): Promise<any[]> {
+    const snapshot = await getDocs(this.airConditionInFirebase);
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+  }
+
+  async getAircons(): Promise<any[]> {
+    const snapshot = await getDocs(this.airConditionInFirebase);
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  }
+
+  async deleteOrder(id: string): Promise<void> {
+  const docRef = doc(this.firestore, 'auftraege', id);
+  await deleteDoc(docRef);
+}
+
 
 
 

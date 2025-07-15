@@ -26,6 +26,10 @@
       {{ customer.createdAtDate | date: 'dd-MM-yy, HH:mm' }} Uhr
     </p>
     <p><strong>Vom Büro gelesen:</strong> {{ customer.read ? 'Ja' : 'Nein' }}</p>
+
+    <button matFab aria-label="Example icon button with a delete icon">
+      <mat-icon (click)="deleteOrders(customer, $event)">delete</mat-icon>
+    </button>
   </div>
 
 </section>

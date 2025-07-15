@@ -1,25 +1,87 @@
 <h2 mat-dialog-title>Neuen Kunden anlegen</h2>
+
 <mat-dialog-content>
+  <form #userForm="ngForm">
+    <mat-form-field>
+      <mat-label>Nachname</mat-label>
+      <input matInput [(ngModel)]="customerDate.name"
+             (ngModelChange)="customerDate.name = capitalize($event)"
+             placeholder="z. B. Müller"
+             name="name"
+             required />
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Nachname</mat-label>
-    <input matInput [(ngModel)]="customerDate.name" placeholder="z. B. Müller" name="name" />
-  </mat-form-field>
+    <mat-form-field>
+      <mat-label>Vorname</mat-label>
+      <input matInput [(ngModel)]="customerDate.vorname"
+             (ngModelChange)="customerDate.vorname = capitalize($event)"
+             name="vorname"
+             required />
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Vorname</mat-label>
-    <input matInput [(ngModel)]="customerDate.vorname" name="vorname" />
-  </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput type="email"
+             [(ngModel)]="customerDate.email"
+             name="email"
+             #emailInput="ngModel"
+             required
+             email />
+      <mat-error *ngIf="emailInput.errors?.['required']">
+        E-Mail ist erforderlich.
+      </mat-error>
+      <mat-error *ngIf="emailInput.errors?.['email'] && !emailInput.errors?.['required']">
+        Bitte eine gültige E-Mail-Adresse eingeben.
+      </mat-error>
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Email</mat-label>
-    <input matInput [(ngModel)]="customerDate.email" name="email" />
-  </mat-form-field>
+    <mat-form-field>
+      <mat-label>Telefonnummer</mat-label>
+      <input matInput type="number" [(ngModel)]="customerDate.telefonnummer" name="telefonnummer" />
+    </mat-form-field>
 
-  <!-- <button mat-button color="primary" (click)="addModel()">+ Modell hinzufügen</button> -->
+
+    <mat-form-field>
+      <mat-label>Handynummer</mat-label>
+      <input matInput type="number" [(ngModel)]="customerDate.handynummer" name="handynummer" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>PLZ</mat-label>
+      <input matInput [(ngModel)]="customerDate.postalCode" name="postalCode" required />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Ort</mat-label>
+      <input matInput [(ngModel)]="customerDate.location" name="location" required />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Straße</mat-label>
+      <input matInput [(ngModel)]="customerDate.street" name="street" required />
+    </mat-form-field>
+
+    <!-- Auswahl der Klimaanlage -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Klimaanlage auswählen</mat-label>
+      <mat-select [(ngModel)]="selectedAirconName" name="klimaanlage" required (selectionChange)="onAirconSelected($event)">
+        <mat-option *ngFor="let ac of aircons" [value]="ac.name">{{ ac.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Modelle auswählen -->
+    <mat-form-field appearance="fill" class="full-width" *ngIf="models.length > 0">
+      <mat-label>Modell auswählen</mat-label>
+      <mat-select [(ngModel)]="selectedModel" name="modell" required>
+        <mat-option *ngFor="let model of models" [value]="model">{{ model }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+
+
 </mat-dialog-content>
 
 <mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Abbrechen</button>
-  <button mat-button color="accent" (click)="save()">Speichern</button>
+  <button mat-button color="accent" (click)="save()" [disabled]="!userForm.form.valid">Speichern</button>
 </mat-dialog-actions>

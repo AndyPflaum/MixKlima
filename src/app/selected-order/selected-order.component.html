@@ -3,9 +3,15 @@
   <div class="oder-list">
     <p><strong>Name:</strong> {{ selectedOrder.name }}</p>
     <p><strong>Vorname:</strong> {{ selectedOrder.vorname }}</p>
+    <p><strong>Telefonnummer:</strong> {{ selectedOrder.telefonnummer }}</p>
+    <p><strong>Handynummer:</strong> {{ selectedOrder.handynummer }}</p>
+    <p><strong>PLZ:</strong> {{ selectedOrder.postalCode }}</p>
+    <p><strong>Ort:</strong> {{ selectedOrder.location }}</p>
+    <p><strong>Str.:</strong> {{ selectedOrder.street }}</p>
     <p><strong>Email:</strong> {{ selectedOrder.email }}</p>
     <p><strong>Erstellt am:</strong> {{ selectedOrder.createdAtDate | date:'dd-MM-yy, HH:mm' }}</p>
-
+    <p><strong>Klimaanlage:</strong> {{ selectedOrder.brand }}</p>
+    <p><strong>Modell:</strong> {{ selectedOrder.model }}</p>
   </div>
 </div>
 

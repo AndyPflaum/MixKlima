@@ -8,17 +8,27 @@ import {
 } from '@angular/material/dialog';
 import { DialogAddUserComponent } from '../dialog-add-user/dialog-add-user.component';
 import { DialogAddAirConditioningComponent } from '../dialog-add-air-conditioning/dialog-add-air-conditioning.component';
+import { LoginComponent } from '../login/login.component';
+import { Router } from '@angular/router'; // ✅ import hinzufügen
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule],
+  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule,CommonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
   readonly dialog = inject(MatDialog);
+  showHeader = true;
+
+  constructor(private router: Router) {
+    this.router.events.subscribe(() => {
+    this.showHeader = !this.router.url.includes('/login');
+  });
+  }
   openDialogNewUsers(): void {
     const dialogRef = this.dialog.open(DialogAddUserComponent, {
     });
@@ -43,5 +53,11 @@ export class HeaderComponent {
     });
   }
 
-  
+logIn(): void {
+  this.router.navigate(['/login']); // ✅ Navigiere zur Login-Seite
+}
+
+
+
+
 }

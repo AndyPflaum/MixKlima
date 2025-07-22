@@ -1,0 +1,46 @@
+<section class="backround-blue-and-red">
+    <h1>Registriere dich</h1>
+
+    <table class="example-full-width" cellspacing="0">
+
+        <td><mat-form-field class="example-full-width">
+                <mat-label>Benutzername</mat-label>
+                <input matInput>
+            </mat-form-field></td>
+        <td><mat-form-field class="example-full-width">
+                <mat-label>Vorname</mat-label>
+                <input matInput>
+            </mat-form-field></td>
+        <td><mat-form-field class="example-full-width">
+                <mat-label>Nachname</mat-label>
+                <input matInput>
+            </mat-form-field></td>
+        <mat-form-field>
+            <mat-label>Büro?</mat-label>
+            <mat-select>
+                <mat-option value="one">Ja</mat-option>
+                <mat-option value="two">Nein</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+        <mat-form-field class="example-full-width">
+            <mat-label>Email</mat-label>
+            <input type="email" matInput [formControl]="emailFormControl" placeholder="Ex. pat@example.com">
+            @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
+            <mat-error>Please enter a valid email address</mat-error>
+            }
+            @if (emailFormControl.hasError('required')) {
+            <mat-error>Email is <strong>required</strong></mat-error>
+            }
+        </mat-form-field>
+
+        <div class="buttons">
+            <button class="register" (click)="logIn()">Einloggen</button><button class="register">Regestrieren</button>
+
+        </div>
+
+    </table>
+
+
+</section>

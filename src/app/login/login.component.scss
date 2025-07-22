@@ -1,0 +1,53 @@
+.login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    height: 100dvh;
+    h1{
+        color: white;
+        font-size: 30px;
+    }
+
+    .example-full-width {
+        position: relative;
+
+        .register {
+            position: absolute;
+            bottom: -40px;
+            left: 0px;
+            padding: 15px;
+            border: 2px solid rgba(0, 0, 0, 0.2); // ✅ dünner, hellschwarzer Rand
+            border-radius: 15px;
+
+            &:hover {
+                cursor: pointer;
+                border-radius: 25px;
+                transition: all 0.2s ease-in-out;
+                color: blue;
+
+
+            }
+
+        }
+
+        .confirm-login {
+            position: absolute;
+            bottom: -40px;
+            right: 0px;
+            padding: 15px;
+            border: 2px solid rgba(0, 0, 0, 0.2); // ✅ dünner, hellschwarzer Rand
+            border-radius: 15px;
+
+            &:hover {
+                cursor: pointer;
+                border-radius: 25px;
+                transition: all 0.2s ease-in-out;
+                color: blue;
+            }
+
+
+        }
+    }
+}

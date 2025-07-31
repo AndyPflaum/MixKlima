@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { Routes } from '@angular/router';
 import { MainComponent } from './main/main.component';
 import { SelectedOrderComponent } from './selected-order/selected-order.component';
-import { AllOrdersComponent } from './all-orders/all-orders.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { authGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
     {
@@ -18,6 +18,8 @@ export const routes: Routes = [
     {
         path: '',
         component: MainComponent,
+            canActivate: [authGuard], // 👈 Schutz aktivieren
+
         children: [
             { path: '', component: SelectedOrderComponent },
             { path: 'auftrag/:id', component: SelectedOrderComponent }

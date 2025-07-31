@@ -11,6 +11,7 @@ import { DialogAddAirConditioningComponent } from '../dialog-add-air-conditionin
 import { LoginComponent } from '../login/login.component';
 import { Router } from '@angular/router'; // ✅ import hinzufügen
 import { CommonModule } from '@angular/common';
+import { getAuth, signOut } from '@angular/fire/auth';
 
 
 @Component({
@@ -57,7 +58,15 @@ logIn(): void {
   this.router.navigate(['/login']); // ✅ Navigiere zur Login-Seite
 }
 
-
+  logout() {
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      console.log('✅ Erfolgreich ausgeloggt');
+      this.router.navigate(['/login']); // Zurück zur Login-Seite
+    }).catch((error) => {
+      console.error('❌ Fehler beim Ausloggen:', error);
+    });
+  }
 
 
 }

@@ -23,12 +23,12 @@ section {
 
     .buttons {
         display: flex;
-        gap: 15px; 
+        gap: 15px;
     }
 
     .register {
         padding: 15px;
-        border: 2px solid rgba(0, 0, 0, 0.2); 
+        border: 2px solid rgba(0, 0, 0, 0.2);
         border-radius: 15px;
 
         &:hover {
@@ -37,5 +37,11 @@ section {
             transition: all 0.2s ease-in-out;
             color: blue;
         }
+    }
+
+    .success-message {
+        color: green;
+        font-weight: bold;
+        margin-top: 10px;
     }
 }

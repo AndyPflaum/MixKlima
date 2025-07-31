@@ -1,46 +1,79 @@
 <section class="backround-blue-and-red">
-    <h1>Registriere dich</h1>
+    <h1>Registrieren</h1>
 
-    <table class="example-full-width" cellspacing="0">
+    <form (ngSubmit)="register()" class="example-form">
 
-        <td><mat-form-field class="example-full-width">
-                <mat-label>Benutzername</mat-label>
-                <input matInput>
-            </mat-form-field></td>
-        <td><mat-form-field class="example-full-width">
-                <mat-label>Vorname</mat-label>
-                <input matInput>
-            </mat-form-field></td>
-        <td><mat-form-field class="example-full-width">
-                <mat-label>Nachname</mat-label>
-                <input matInput>
-            </mat-form-field></td>
-        <mat-form-field>
-            <mat-label>Büro?</mat-label>
-            <mat-select>
-                <mat-option value="one">Ja</mat-option>
-                <mat-option value="two">Nein</mat-option>
-            </mat-select>
-        </mat-form-field>
+        <table class="example-full-width" cellspacing="0">
+            <tr>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Benutzername</mat-label>
+                        <input matInput [(ngModel)]="username" name="username" required />
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Vorname</mat-label>
+                        <input matInput [(ngModel)]="firstName" name="firstName" required />
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Nachname</mat-label>
+                        <input matInput [(ngModel)]="lastName" name="lastName" required />
+                    </mat-form-field>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <mat-form-field appearance="fill" class="example-full-width">
+                        <mat-label>Büro?</mat-label>
+                        <mat-select [(ngModel)]="isOffice" name="isOffice" required>
+                            <mat-option [value]="true">Ja</mat-option>
+                            <mat-option [value]="false">Nein</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Email</mat-label>
+                        <input type="email" matInput [formControl]="emailFormControl"
+                            placeholder="z. B. max@example.com" required />
+                        <mat-error *ngIf="emailFormControl.hasError('required')">E-Mail ist erforderlich</mat-error>
+                        <mat-error *ngIf="emailFormControl.hasError('email')">Ungültige E-Mail-Adresse</mat-error>
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Passwort</mat-label>
+                        <input type="password" matInput [formControl]="passwordFormControl" required />
+                        <mat-error *ngIf="passwordFormControl.hasError('required')">Passwort ist
+                            erforderlich</mat-error>
+                        <mat-error *ngIf="passwordFormControl.hasError('minlength')">Mindestens 6 Zeichen</mat-error>
+                    </mat-form-field>
+                </td>
+
+            </tr>
+        </table>
 
 
-        <mat-form-field class="example-full-width">
-            <mat-label>Email</mat-label>
-            <input type="email" matInput [formControl]="emailFormControl" placeholder="Ex. pat@example.com">
-            @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
-            <mat-error>Please enter a valid email address</mat-error>
-            }
-            @if (emailFormControl.hasError('required')) {
-            <mat-error>Email is <strong>required</strong></mat-error>
-            }
-        </mat-form-field>
 
-        <div class="buttons">
-            <button class="register" (click)="logIn()">Einloggen</button><button class="register">Regestrieren</button>
-
+        <div *ngIf="successMessage" class="success-message">
+            {{ successMessage }}
         </div>
 
-    </table>
 
+        <div class="buttons">
+            <button mat-button type="button" (click)="logIn()">Einloggen</button>
+            <button mat-raised-button color="primary" type="submit"
+                [disabled]="!emailFormControl.valid || !passwordFormControl.valid">
+                Registrieren
+            </button>
+        </div>
 
+        <div *ngIf="errorMessage" class="error-message">
+            {{ errorMessage }}
+        </div>
+
+    </form>
 </section>

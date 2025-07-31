@@ -1,21 +1,26 @@
-<!-- <app-header></app-header> -->
-
 <div class="login backround-blue-and-red">
   <h1>Anmelden</h1>
-  <table class="example-full-width" cellspacing="0">
-    <tr>
-      <td><mat-form-field class="example-full-width">
-          <mat-label>Benutzername</mat-label>
-          <input matInput>
-        </mat-form-field></td>
-      <td><mat-form-field class="example-full-width">
-          <mat-label>Passwort</mat-label>
-          <input matInput>
-        </mat-form-field></td>
-    </tr>
+  <form (ngSubmit)="login()"class="example-full-width">
+    <table  cellspacing="0">
+      <tr>
+        <td>
+          <mat-form-field class="example-full-width">
+            <mat-label>Email</mat-label>
+            <input matInput [(ngModel)]="email" name="email" required />
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field class="example-full-width">
+            <mat-label>Passwort</mat-label>
+            <input matInput [(ngModel)]="password" name="password" type="password" required />
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
 
-    <button class="register"(click)="register()" >Regestrieren</button><button class="confirm-login" (click)="login()">Einloggen</button>
+    <button class="register" type="button" (click)="register()">Registrieren</button>
+    <button class="confirm-login" type="submit">Einloggen</button>
+  </form>
 
-  </table>
-
+  <div *ngIf="loginError" class="error-message">{{ loginError }}</div>
 </div>

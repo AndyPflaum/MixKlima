@@ -5,7 +5,8 @@
     justify-content: center;
     height: 100vh;
     height: 100dvh;
-    h1{
+
+    h1 {
         color: white;
         font-size: 30px;
     }
@@ -49,5 +50,11 @@
 
 
         }
+    }
+
+    .error-message {
+        color: red;
+        margin-top: 10px;
+        font-weight: bold;
     }
 }

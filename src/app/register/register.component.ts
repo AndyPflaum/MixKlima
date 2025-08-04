@@ -9,6 +9,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { FirebaseService } from '../firebase.service';
+import { User } from '../../model/user.class';
 
 
 @Component({
@@ -33,46 +35,56 @@ export class RegisterComponent {
   errorMessage: string | null = null;
   successMessage = ''; // In der Component-Klasse hinzufügen
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private firebaseService: FirebaseService) { }
 
   logIn(): void {
     this.router.navigate(['/login']);
   }
 
 
-async register() {
-  const email = this.emailFormControl.value ?? '';
-  const password = this.passwordFormControl.value ?? '';
+  async register() {
+    const email = this.emailFormControl.value ?? '';
+    const password = this.passwordFormControl.value ?? '';
 
-  if (!email || !password) {
-    console.error('❌ E-Mail oder Passwort fehlt');
-    return;
+    if (!email || !password) {
+      this.errorMessage = '❌ E-Mail oder Passwort fehlt';
+      return;
+    }
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
+      const uid = userCredential.user.uid;
+
+    // ✅ Erstelle neues User-Objekt mit deiner Klasse
+    const newUser = new User({
+      name: this.lastName,
+      vorname: this.firstName,
+      email: email,
+      office: this.isOffice ?? false,
+      id: uid  // falls du `id` nutzen willst
+    });
+
+      // 🔽 In Firestore speichern
+    await this.firebaseService.saveUser(uid, { ...newUser });
+      console.log('✅ Benutzer-Daten gespeichert');
+
+      // Felder zurücksetzen
+      this.emailFormControl.reset();
+      this.passwordFormControl.reset();
+      this.firstName = '';
+      this.lastName = '';
+      this.isOffice = null;
+
+      this.successMessage = '✅ Registrierung erfolgreich abgeschlossen!';
+      setTimeout(() => {
+        this.successMessage = '';
+        this.logIn();
+      }, 2000);
+
+    } catch (error: any) {
+      console.error('❌ Registrierung fehlgeschlagen:', error);
+      this.errorMessage = '❌ Registrierung fehlgeschlagen: ' + error.message;
+    }
   }
-
-  try {
-    const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
-    console.log('✅ Registrierung erfolgreich:', userCredential.user);
-
-    // Felder zurücksetzen
-    this.emailFormControl.reset();
-    this.passwordFormControl.reset();
-
-    // Erfolgsmeldung anzeigen
-    this.successMessage = '✅ Registrierung erfolgreich abgeschlossen!';
-
-    // Optional: Meldung nach 5 Sekunden wieder ausblenden
-    setTimeout(() => {
-      this.successMessage = '';
-    }, 5000);
-
-  } catch (error) {
-    console.error('❌ Registrierung fehlgeschlagen:', error);
-  }
-  this.logIn();
-}
-
-
-
-
 
 }

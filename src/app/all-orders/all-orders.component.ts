@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
+import { getAuth } from '@angular/fire/auth';
 
 
 @Component({
@@ -22,12 +23,29 @@ export class AllOrdersComponent implements OnInit {
   ordersOriginal: any[] = [];
   visibleCount = 5;
   selectedOrderId: string | null = null;
+  isGuest = false;
+  isOfficeView = false;
 
   unsubscribeFn: () => void = () => { };
 
   constructor(private firebase: FirebaseService, private selectedOrderService: SelectedOrderService, private router: Router) { }
 
   ngOnInit(): void {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (user) {
+    const uid = user.uid;
+    this.firebase.getUserById(uid).then((userData: any) => {
+      if (
+        userData?.vorname?.toLowerCase() === 'gast' &&
+        userData?.name?.toLowerCase() === 'gast'
+      ) {
+        this.isGuest = true;
+      }
+    });
+  }
+
     this.unsubscribeFn = this.firebase.listenToOrders((daten: any[]) => {
       const auftraegeMitDatum = daten.map((customer: any) => ({
         ...customer,
@@ -96,17 +114,17 @@ export class AllOrdersComponent implements OnInit {
     this.unsubscribeFn();
   }
 
-deleteOrders(customer: any, event: MouseEvent) {
-  event.stopPropagation(); // Verhindert, dass openDetails() auch ausgeführt wird
-  if (confirm(`Möchtest du den Auftrag von ${customer.name} ${customer.vorname} wirklich löschen?`)) {
-    this.firebase.deleteOrder(customer.id).then(() => {
-      console.log('✅ Auftrag gelöscht:', customer.id);
-      this.updateVisibleOrders(); // falls notwendig
-    }).catch(err => {
-      console.error('Fehler beim Löschen des Auftrags:', err);
-    });
+  deleteOrders(customer: any, event: MouseEvent) {
+    event.stopPropagation(); // Verhindert, dass openDetails() auch ausgeführt wird
+    if (confirm(`Möchtest du den Auftrag von ${customer.name} ${customer.vorname} wirklich löschen?`)) {
+      this.firebase.deleteOrder(customer.id).then(() => {
+        console.log('✅ Auftrag gelöscht:', customer.id);
+        this.updateVisibleOrders(); // falls notwendig
+      }).catch(err => {
+        console.error('Fehler beim Löschen des Auftrags:', err);
+      });
+    }
   }
-}
 
 
 }

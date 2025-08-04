@@ -8,9 +8,10 @@ import {
   getDoc,
   query,
   onSnapshot, where,
-  setDoc,deleteDoc
+  setDoc, deleteDoc
 } from '@angular/fire/firestore';
 import { CustomerDate } from '../model/customerData.class';
+import { updateDoc } from 'firebase/firestore';
 
 
 @Injectable({
@@ -42,6 +43,22 @@ export class FirebaseService {
     };
 
     await addDoc(collectionRef, airconData);
+  }
+
+  async saveUser(uid: string, userData: any): Promise<void> {
+    const userDoc = doc(this.firestore, 'users', uid);
+    return setDoc(userDoc, userData);
+  }
+
+  async getUserById(uid: string): Promise<any | null> {
+    const docRef = doc(this.firestore, 'users', uid);
+    const docSnap = await getDoc(docRef);
+    return docSnap.exists() ? docSnap.data() : null;
+  }
+
+  async updateUserOfficeStatus(uid: string, office: boolean): Promise<void> {
+    const userRef = doc(this.firestore, 'users', uid);
+    return setDoc(userRef, { office }, { merge: true });
   }
 
   async isAirconNameTaken(name: string): Promise<boolean> {
@@ -127,10 +144,15 @@ export class FirebaseService {
   }
 
   async deleteOrder(id: string): Promise<void> {
-  const docRef = doc(this.firestore, 'auftraege', id);
-  await deleteDoc(docRef);
-}
+    const docRef = doc(this.firestore, 'auftraege', id);
+    await deleteDoc(docRef);
+  }
 
+  async getUserData(uid: string): Promise<any> {
+    const docRef = doc(this.firestore, 'users', uid);
+    const docSnap = await getDoc(docRef);
+    return docSnap.exists() ? docSnap.data() : null;
+  }
 
 
 

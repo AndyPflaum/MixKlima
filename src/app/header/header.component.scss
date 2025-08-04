@@ -18,7 +18,7 @@ section {
 
         img {
             height: 60px;
-            width:auto;
+            width: auto;
             filter: brightness(0) invert(1);
         }
 
@@ -27,6 +27,22 @@ section {
             gap: 50px;
             font-size: 20px;
             font-weight: 700;
+            position: relative;
+            align-items: center;
+
+            .logout {
+                display: none;
+                position: absolute !important;
+                right: 33px;
+                bottom: -35px;
+                background: white;
+                border-top-left-radius: 30px;
+                border-bottom-left-radius: 30px;
+                border-bottom-right-radius: 30px;
+                &.visible {
+                    display: block;
+                }
+            }
 
             .menu {
                 position: relative;
@@ -58,4 +74,18 @@ section {
         }
 
     }
+
+    .user-initials {
+        background-color: white;
+        color: #1e1e1e;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        padding: 8px;
+    }
+
 }

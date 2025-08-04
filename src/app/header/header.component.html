@@ -4,10 +4,16 @@
         <div class="header-right">
             <div class="menu" (click)="openDialogNewUsers()" *ngIf="showHeader">Neuen Kunde einfügen</div>
             <div class="menu" (click)="openDialogNewAirConditioning()" *ngIf="showHeader">Klimaanlage einfügen</div>
-            <div class="menu"(click)="logout()">Ausloggen</div>
+            <div class="menu" *ngIf="initials" (click)="lockOutIsOben()">
+                <span class="user-initials">{{ initials }}</span>
+            </div>
+
+            <div class="menu logout" [ngClass]="{ visible: logOutOben }" (click)="logout()">
+                Ausloggen
+            </div>
         </div>
 
     </div>
 
 
-</section> 
+</section>

@@ -8,10 +8,10 @@ import {
   getDoc,
   query,
   onSnapshot, where,
-  setDoc, deleteDoc
+  setDoc, deleteDoc,updateDoc
 } from '@angular/fire/firestore';
 import { CustomerDate } from '../model/customerData.class';
-import { updateDoc } from 'firebase/firestore';
+import { User } from '../model/user.class';
 
 
 @Injectable({
@@ -45,21 +45,35 @@ export class FirebaseService {
     await addDoc(collectionRef, airconData);
   }
 
-  async saveUser(uid: string, userData: any): Promise<void> {
+  async saveUser(uid: string, userData: User): Promise<void> {
     const userDoc = doc(this.firestore, 'users', uid);
     return setDoc(userDoc, userData);
   }
 
   async getUserById(uid: string): Promise<any | null> {
-    const docRef = doc(this.firestore, 'users', uid);
-    const docSnap = await getDoc(docRef);
-    return docSnap.exists() ? docSnap.data() : null;
-  }
+  const docRef = doc(this.firestore, 'users', uid);
+  const docSnap = await getDoc(docRef);
 
-  async updateUserOfficeStatus(uid: string, office: boolean): Promise<void> {
-    const userRef = doc(this.firestore, 'users', uid);
-    return setDoc(userRef, { office }, { merge: true });
+  if (docSnap.exists()) {
+    const data = { id: docSnap.id, uid, ...docSnap.data() };
+    console.log('users/<uid> →', data); // <-- vor return loggen
+    return data;
   }
+   else {
+    console.warn('User nicht gefunden:', uid);
+    return null;
+  }
+  
+}
+
+
+// im FirebaseService
+async updateCustomerReadStatus(id: string, data: Partial<any>) {
+  const ref = doc(this.firestore, 'auftraege', id);
+  return updateDoc(ref, data);
+}
+
+
 
   async isAirconNameTaken(name: string): Promise<boolean> {
     const colRef = collection(this.firestore, 'airConditioning');
@@ -151,7 +165,10 @@ export class FirebaseService {
   async getUserData(uid: string): Promise<any> {
     const docRef = doc(this.firestore, 'users', uid);
     const docSnap = await getDoc(docRef);
+        console.log( 'teste was hier raus kommt ',docSnap);
+
     return docSnap.exists() ? docSnap.data() : null;
+    
   }
 
 

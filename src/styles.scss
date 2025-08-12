@@ -59,6 +59,26 @@ body {
             background-color: #ffe6e6; // hellrot
             border-color: #e6b6b6;
         }
+
+        &.blinking-orange {
+            animation: blinkOrange 1s infinite;
+        }
+
+
+    }
+}
+
+@keyframes blinkOrange {
+    0% {
+        background-color: orange;
+    }
+
+    50% {
+        background-color: wheat;
+    }
+
+    100% {
+        background-color: orange;
     }
 }
 

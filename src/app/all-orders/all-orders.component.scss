@@ -20,6 +20,21 @@
     }
   }
 
+  .move-to-the-office {
+    padding: 8px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+    background-color: lightgoldenrodyellow;
+    transition: all ease-in-out 0.2s;
+
+    &:hover {
+      cursor: pointer;
+      font-size: 15px;
+      transition: all ease-in-out 0.2s;
+
+    }
+  }
+
   // Scrollbar Styling (für WebKit-Browser wie Chrome, Edge, Safari)
   &::-webkit-scrollbar {
     width: 6px;
@@ -83,6 +98,8 @@
     clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%);
   }
 
+
+
   button {
     position: absolute;
     top: 5px;
@@ -97,6 +114,8 @@
     }
   }
 }
+
+
 
 @keyframes draw-border-clockwise {
   0% {

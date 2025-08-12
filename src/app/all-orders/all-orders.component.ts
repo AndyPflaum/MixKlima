@@ -23,28 +23,48 @@ export class AllOrdersComponent implements OnInit {
   ordersOriginal: any[] = [];
   visibleCount = 5;
   selectedOrderId: string | null = null;
-  isGuest = false;
   isOfficeView = false;
+  logginID = ""
+  office = false;
+  newNotification = new Audio('assets/sound/level-up-07-383747.mp3');
+  audioUnlocked = false;
 
   unsubscribeFn: () => void = () => { };
 
-  constructor(private firebase: FirebaseService, private selectedOrderService: SelectedOrderService, private router: Router) { }
+  constructor(private firebase: FirebaseService, private selectedOrderService: SelectedOrderService, private router: Router) {
+
+  }
 
   ngOnInit(): void {
     const auth = getAuth();
     const user = auth.currentUser;
 
     if (user) {
-    const uid = user.uid;
-    this.firebase.getUserById(uid).then((userData: any) => {
-      if (
-        userData?.vorname?.toLowerCase() === 'gast' &&
-        userData?.name?.toLowerCase() === 'gast'
-      ) {
-        this.isGuest = true;
-      }
-    });
-  }
+      const uid = user.uid;
+
+      this.firebase.getUserById(uid).then((userData: any) => {
+        if (!userData) return;
+
+        // Speichere UID für spätere Verwendung
+        this.logginID = uid;
+        this.office = userData.office;
+        console.log('✅ Eingeloggt als:', userData.vorname, userData.name, userData.office);
+
+        // 👉 Prüfung, ob office true ist
+        if (userData.office === true) {
+          console.log('✅ User hat Büro-Sicht');
+
+          // hier kannst du z. B. eine Variable setzen:
+          this.isOfficeView = true;
+          this.playNotificationSound()
+        } else {
+          console.log('👤 User ist kein Büro-Mitarbeiter');
+          this.isOfficeView = false;
+        }
+
+      });
+
+    }
 
     this.unsubscribeFn = this.firebase.listenToOrders((daten: any[]) => {
       const auftraegeMitDatum = daten.map((customer: any) => ({
@@ -74,16 +94,41 @@ export class AllOrdersComponent implements OnInit {
   }
 
   openDetails(customer: any) {
+
     if (customer?.id) {
       this.selectedOrderId = customer.id; // 👉 Hier speichern
       this.router.navigate(['/auftrag', customer.id]);
       this.selectedOrderService.setSelectedOrder(customer);
       // Separat prüfen, ob gelöscht werden soll
       this.handleGuestAutoDelete(customer);
+      console.log("ist es gelesen?", customer.read);
     } else {
       console.warn('Keine ID vorhanden:', customer);
+
+
     }
   }
+handleClick(customer: any) {
+  if (this.isUserOffice() && !customer.read) {
+    this.firebase.updateCustomerReadStatus(customer.id, { read: true })
+      .then(() => {
+        customer.read = true;               // UI sofort updaten
+        console.log('✅ Auftrag auf gelesen gesetzt');
+      })
+      .catch((err) => {
+        console.error('❌ read-Update fehlgeschlagen:', err);
+      });
+  }
+
+  this.openDetails(customer);
+}
+
+isUserOffice(): boolean {
+  return !!this.office; // office ist jetzt boolean
+}
+
+
+
 
   handleGuestAutoDelete(customer: any): void {
     if (customer.guestLoggedIn) {
@@ -107,8 +152,18 @@ export class AllOrdersComponent implements OnInit {
 
 
   updateVisibleOrders() {
-    this.orders = this.ordersOriginal.slice(0, this.visibleCount);
-  }
+  this.orders = [...this.ordersOriginal]
+    .sort((a, b) => {
+      // Erst nach read sortieren: false (ungelesen) zuerst
+      if (a.read === b.read) {
+        // Falls beide gleich gelesen/ungelesen → nach Datum sortieren
+        return b.createdAtDate.getTime() - a.createdAtDate.getTime();
+      }
+      return a.read ? 1 : -1; // false = oben
+    })
+    .slice(0, this.visibleCount);
+}
+
 
   ngOnDestroy(): void {
     this.unsubscribeFn();
@@ -124,6 +179,27 @@ export class AllOrdersComponent implements OnInit {
         console.error('Fehler beim Löschen des Auftrags:', err);
       });
     }
+  }
+
+
+  playNotificationSound() {
+    setTimeout(() => {
+      this.newNotification.play();
+
+    }, 500);
+    console.log('Sound sollte abgespielt werden ');
+
+  }
+
+  unlockAudio() {
+    this.newNotification.play().then(() => {
+      this.audioUnlocked = true;
+      this.newNotification.pause(); // direkt wieder stoppen
+      this.newNotification.currentTime = 0;
+      console.log('🔓 Audio entsperrt');
+    }).catch(err => {
+      console.warn('❌ Audio konnte nicht entsperrt werden:', err);
+    });
   }
 
 

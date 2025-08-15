@@ -2,8 +2,9 @@
   <button class="move-to-the-office" *ngIf="logginID === 'ZWvRkNa1sIOEnDeDLBKMduZNRQj2'">
     Zu Büro Sicht wechseln!
   </button>
-  <button *ngIf="!audioUnlocked" (click)="unlockAudio()">🔊 Benachrichtigungen aktivieren</button>
-
+  @if (!orders || orders.length === 0) {
+  <span class="no-orders">Kein Auftrag erfasst!!</span>
+  } @else {
   <h1>Alle Aufträge</h1>
 
   <!-- Auswahl wie viele Aufträge angezeigt werden -->
@@ -33,9 +34,12 @@
     </p>
     <p><strong>Vom Büro gelesen:</strong> {{ customer.read ? 'Ja' : 'Nein' }}</p>
 
+    @if (!isOfficeView) {
     <button matFab aria-label="Example icon button with a delete icon">
-      <mat-icon (click)="deleteOrders(customer, $event)">delete</mat-icon>
+      <mat-icon (click)="openDeleteDialog(customer, $event)">delete</mat-icon>
     </button>
-  </div>
+    }
 
+  </div>
+  }
 </section>

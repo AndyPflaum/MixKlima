@@ -3,6 +3,11 @@
   overflow-y: auto;
   padding: 1rem;
 
+  .no-orders{
+    color: red;
+    font-size: 22px ;font-weight: bold;
+  }
+
   h1 {
     font-size: 50px;
     color: white;

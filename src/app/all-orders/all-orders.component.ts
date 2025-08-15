@@ -1,5 +1,5 @@
 // src/app/all-orders/all-orders.component.ts
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FirebaseService } from '../firebase.service';
@@ -9,6 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { getAuth } from '@angular/fire/auth';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogDeleteOrdersComponent } from '../dialog-delete-orders/dialog-delete-orders.component';
 
 
 @Component({
@@ -28,10 +30,11 @@ export class AllOrdersComponent implements OnInit {
   office = false;
   newNotification = new Audio('assets/sound/level-up-07-383747.mp3');
   audioUnlocked = false;
+  // readonly dialog = Inject(MatDialog);
 
   unsubscribeFn: () => void = () => { };
 
-  constructor(private firebase: FirebaseService, private selectedOrderService: SelectedOrderService, private router: Router) {
+  constructor(private firebase: FirebaseService, private selectedOrderService: SelectedOrderService, private router: Router, private dialog: MatDialog,) {
 
   }
 
@@ -108,24 +111,24 @@ export class AllOrdersComponent implements OnInit {
 
     }
   }
-handleClick(customer: any) {
-  if (this.isUserOffice() && !customer.read) {
-    this.firebase.updateCustomerReadStatus(customer.id, { read: true })
-      .then(() => {
-        customer.read = true;               // UI sofort updaten
-        console.log('✅ Auftrag auf gelesen gesetzt');
-      })
-      .catch((err) => {
-        console.error('❌ read-Update fehlgeschlagen:', err);
-      });
+  handleClick(customer: any) {
+    if (this.isUserOffice() && !customer.read) {
+      this.firebase.updateCustomerReadStatus(customer.id, { read: true })
+        .then(() => {
+          customer.read = true;               // UI sofort updaten
+          console.log('✅ Auftrag auf gelesen gesetzt');
+        })
+        .catch((err) => {
+          console.error('❌ read-Update fehlgeschlagen:', err);
+        });
+    }
+
+    this.openDetails(customer);
   }
 
-  this.openDetails(customer);
-}
-
-isUserOffice(): boolean {
-  return !!this.office; // office ist jetzt boolean
-}
+  isUserOffice(): boolean {
+    return !!this.office; // office ist jetzt boolean
+  }
 
 
 
@@ -152,17 +155,17 @@ isUserOffice(): boolean {
 
 
   updateVisibleOrders() {
-  this.orders = [...this.ordersOriginal]
-    .sort((a, b) => {
-      // Erst nach read sortieren: false (ungelesen) zuerst
-      if (a.read === b.read) {
-        // Falls beide gleich gelesen/ungelesen → nach Datum sortieren
-        return b.createdAtDate.getTime() - a.createdAtDate.getTime();
-      }
-      return a.read ? 1 : -1; // false = oben
-    })
-    .slice(0, this.visibleCount);
-}
+    this.orders = [...this.ordersOriginal]
+      .sort((a, b) => {
+        // Erst nach read sortieren: false (ungelesen) zuerst
+        if (a.read === b.read) {
+          // Falls beide gleich gelesen/ungelesen → nach Datum sortieren
+          return b.createdAtDate.getTime() - a.createdAtDate.getTime();
+        }
+        return a.read ? 1 : -1; // false = oben
+      })
+      .slice(0, this.visibleCount);
+  }
 
 
   ngOnDestroy(): void {
@@ -202,5 +205,20 @@ isUserOffice(): boolean {
     });
   }
 
+  openDeleteDialog(customer: any, event: MouseEvent) {
+    event.stopPropagation(); // verhindert, dass openDetails() aus handleClick ausgelöst wird
+
+    const dialogRef = this.dialog.open(DialogDeleteOrdersComponent, {
+      width: '360px',
+      data: customer // optional, falls du Kundendaten übergeben willst
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'deleted') {
+        this.updateVisibleOrders(); // Liste aktualisieren
+      }
+    });
+
+  }
 
 }

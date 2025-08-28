@@ -13,6 +13,11 @@
     <p><strong>Klimaanlage:</strong> {{ selectedOrder.brand }}</p>
     <p><strong>Modell:</strong> {{ selectedOrder.model }}</p>
   </div>
+
+  
+        @if (firebase.mobileMainView) {
+            <button class="mobiele-button" (click)="mobieleViewChange()">X</button>
+        }
 </div>
 
 <ng-template #noOrder>

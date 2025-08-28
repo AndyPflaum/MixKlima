@@ -5,22 +5,22 @@ import { Observable } from 'rxjs';
 import { CustomerDate } from '../../model/customerData.class';
 import { FirebaseService } from '../firebase.service';
 import { RouterModule } from '@angular/router';
-
+import { NgClass } from '@angular/common';
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [  AllOrdersComponent,HeaderComponent,RouterModule],
+  imports: [AllOrdersComponent, HeaderComponent, RouterModule, NgClass],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
 export class MainComponent implements OnInit {
   auftraege$!: Observable<(CustomerDate & { id: string })[]>;
 
-  constructor(private firebase: FirebaseService) { }
-
+  constructor(public firebase: FirebaseService) { }
 
   ngOnInit(): void {
     // this.auftraege$ = this.firebase.getAllAufträge(); // ⬅️ Das MUSS hier stehen
   }
+
 
 }

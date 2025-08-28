@@ -22,6 +22,20 @@ section {
             filter: brightness(0) invert(1);
         }
 
+        .menu-mobile {
+            display: none;
+
+            button {
+                height: 50px;
+                width: 50px;
+            }
+
+            @media screen and (max-width:620px) {
+                display: block;
+
+            }
+        }
+
         .header-right {
             display: flex;
             gap: 50px;
@@ -29,6 +43,10 @@ section {
             font-weight: 700;
             position: relative;
             align-items: center;
+
+            @media screen and (max-width:620px) {
+                display: none;
+            }
 
             .logout {
                 display: none;
@@ -39,6 +57,8 @@ section {
                 border-top-left-radius: 30px;
                 border-bottom-left-radius: 30px;
                 border-bottom-right-radius: 30px;
+                z-index: 1;
+
                 &.visible {
                     display: block;
                 }
@@ -71,6 +91,81 @@ section {
             }
 
 
+        }
+
+        .menu-selection {
+            position: absolute;
+            top: -100vh;
+            left: 0;
+            right: 0;
+            background-color: lightgray;
+            height: calc(100vh - 80px);
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            transition: top 0.5s ease-in-out;
+            z-index: 2;
+
+            &.menu-selection-open {
+                top: 80px;
+            }
+
+            .menu {
+                position: relative;
+                padding: 10px 15px;
+                font-size: 30px;
+
+                &:hover {
+                    cursor: pointer;
+                }
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    height: 3px;
+                    width: 100%;
+                    background-color: white;
+                    transform: scaleX(0); // Start: unsichtbar
+                    transform-origin: center; // Mittelpunkt ist Startpunkt
+                    transition: transform 0.3s ease; // Animation
+                }
+
+                &:hover::after {
+                    transform: scaleX(1); // Skaliert auf volle Breite von innen nach außen
+                }
+            }
+
+            .logout {
+                display: none;
+                background: white;
+                border-top-left-radius: 30px;
+                border-bottom-left-radius: 30px;
+                border-bottom-right-radius: 30px;
+                border-top-right-radius: 30px;
+                z-index: 1;
+
+                &.visible {
+                    display: block;
+                }
+            }
+        }
+
+        .user-initials {
+            background-color: white;
+            color: #1e1e1e;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            padding: 8px;
         }
 
     }

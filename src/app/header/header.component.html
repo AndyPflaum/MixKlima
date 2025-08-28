@@ -12,6 +12,25 @@
                 Ausloggen
             </div>
         </div>
+        <div class="menu-mobile">
+            <button mat-mini-fab color="primary" aria-label="Menu" (click)="openMenuSelection()">
+                <mat-icon>menu</mat-icon>
+            </button>
+
+
+        </div>
+        <div class="menu-selection" [class.menu-selection-open]="menuSelectionIsOpen">
+            <div class="menu" (click)="openDialogNewUsers()" *ngIf="showHeader">Neuen Kunde einfügen</div>
+            <div class="menu" (click)="openDialogNewAirConditioning()" *ngIf="showHeader">Klimaanlage einfügen</div>
+            <div class="menu" *ngIf="initials" (click)="lockOutIsOben()">
+                <span class="user-initials">{{ initials }}</span>
+            </div>
+
+            <div class="menu logout" [ngClass]="{ visible: logOutOben }" (click)="logout()">
+                Ausloggen
+            </div>
+        </div>
+
 
     </div>
 

@@ -5,6 +5,16 @@ section {
     align-items: center;
     justify-content: center;
 
+    @media screen and (max-width:720px) {
+        tr {
+        display: flex;
+        flex-direction: column;
+
+    }
+    }
+
+    
+
     h1 {
         color: white;
         font-size: 30px;

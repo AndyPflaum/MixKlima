@@ -20,6 +20,7 @@ import { User } from '../model/user.class';
 
 export class FirebaseService {
   constructor(private firestore: Firestore) { }
+  mobileMainView = false;
 
   ordersInFirebase = collection(this.firestore, 'auftraege')
   airConditionInFirebase = collection(this.firestore, 'airConditioning')

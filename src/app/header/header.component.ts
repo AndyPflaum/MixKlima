@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
+import { MatButton, MatButtonModule } from '@angular/material/button';
 import {
   MatDialog,
 } from '@angular/material/dialog';
@@ -15,12 +15,13 @@ import { getAuth, signOut } from '@angular/fire/auth';
 import { onAuthStateChanged } from 'firebase/auth';
 import { FirebaseService } from '../firebase.service';
 import { Auth } from '@angular/fire/auth';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, CommonModule],
+  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, CommonModule, MatIconModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -30,6 +31,7 @@ export class HeaderComponent implements OnInit {
   showHeader = true;
   initials: string = '';
   logOutOben = false;
+  menuSelectionIsOpen = false;
   constructor(private router: Router, private firebase: FirebaseService) {
     this.router.events.subscribe(() => {
       this.showHeader = !this.router.url.includes('/login');
@@ -90,9 +92,13 @@ export class HeaderComponent implements OnInit {
       console.error('❌ Fehler beim Ausloggen:', error);
     });
   }
+
   lockOutIsOben() {
     this.logOutOben = !this.logOutOben;
   }
 
+  openMenuSelection() {
+    this.menuSelectionIsOpen= !this.menuSelectionIsOpen;
+  }
 
 }

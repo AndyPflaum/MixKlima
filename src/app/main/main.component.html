@@ -1,11 +1,12 @@
 <section>
     <app-header></app-header>
     <div class="main-contant">
-        <div class="open-orders">
+
+        <div  class="open-orders"  [ngClass]="{ 'mobile-view-open-orders': firebase.mobileMainView }">
             <router-outlet></router-outlet>
 
-        </div>
-        <div class="orders backround-blue-and-red">
+        </div >
+        <div class="orders backround-blue-and-red"  [ngClass]="{ 'mobiel-View ': firebase.mobileMainView }">
             <app-all-orders></app-all-orders>
         </div>
     </div>

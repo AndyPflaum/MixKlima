@@ -31,4 +31,10 @@ export class SelectedOrderComponent implements OnInit {
   });
 }
 
+  mobieleViewChange(){
+    if (window.innerWidth < 620){
+    this.firebase.mobileMainView = false;
+
+    }
+  }
 }

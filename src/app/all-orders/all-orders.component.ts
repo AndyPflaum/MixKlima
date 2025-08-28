@@ -30,7 +30,6 @@ export class AllOrdersComponent implements OnInit {
   office = false;
   newNotification = new Audio('assets/sound/level-up-07-383747.mp3');
   audioUnlocked = false;
-  // readonly dialog = Inject(MatDialog);
 
   unsubscribeFn: () => void = () => { };
 
@@ -54,7 +53,7 @@ export class AllOrdersComponent implements OnInit {
         console.log('✅ Eingeloggt als:', userData.vorname, userData.name, userData.office);
 
         // 👉 Prüfung, ob office true ist
-        if (userData.office === true) {
+        if (this.office === true) {
           console.log('✅ User hat Büro-Sicht');
 
           // hier kannst du z. B. eine Variable setzen:
@@ -88,13 +87,13 @@ export class AllOrdersComponent implements OnInit {
 
 
 
-  logKundeId(customer: any): void {
-    console.log('Kunden-ID:', customer.id);
-  }
+  // logKundeId(customer: any): void {
+  //   console.log('Kunden-ID:', customer.id);
+  // }
 
-  selectKunde(customer: any) {
-    this.selectedOrderService.setSelectedOrder(customer);
-  }
+  // selectKunde(customer: any) {
+  //   this.selectedOrderService.setSelectedOrder(customer);
+  // }
 
   openDetails(customer: any) {
 
@@ -111,6 +110,7 @@ export class AllOrdersComponent implements OnInit {
 
     }
   }
+
   handleClick(customer: any) {
     if (this.isUserOffice() && !customer.read) {
       this.firebase.updateCustomerReadStatus(customer.id, { read: true })
@@ -124,6 +124,7 @@ export class AllOrdersComponent implements OnInit {
     }
 
     this.openDetails(customer);
+    this.clickMobieleView();
   }
 
   isUserOffice(): boolean {
@@ -219,6 +220,13 @@ export class AllOrdersComponent implements OnInit {
       }
     });
 
+  }
+
+  clickMobieleView() {
+    if (window.innerWidth < 620) {
+      this.firebase.mobileMainView = !this.firebase.mobileMainView;
+      console.log(' mobieleMainSicht steht auf ', this.firebase.mobileMainView);
+    }
   }
 
 }

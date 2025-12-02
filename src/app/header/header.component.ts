@@ -31,8 +31,7 @@ export class HeaderComponent implements OnInit {
   showHeader = true;
   initials: string = '';
   logOutOben = false;
-  menuSelectionIsOpen = false;
-  constructor(private router: Router, private firebase: FirebaseService) {
+  constructor(private router: Router, public firebase: FirebaseService) {
     this.router.events.subscribe(() => {
       this.showHeader = !this.router.url.includes('/login');
     });
@@ -81,12 +80,15 @@ export class HeaderComponent implements OnInit {
 
   logIn(): void {
     this.router.navigate(['/login']); // ✅ Navigiere zur Login-Seite
+
   }
 
   logout() {
     const auth = getAuth();
     signOut(auth).then(() => {
       console.log('✅ Erfolgreich ausgeloggt');
+      this.firebase.menuSelectionIsOpen = false;
+      this.openMenuSelection
       this.router.navigate(['/login']); // Zurück zur Login-Seite
     }).catch((error) => {
       console.error('❌ Fehler beim Ausloggen:', error);
@@ -98,7 +100,13 @@ export class HeaderComponent implements OnInit {
   }
 
   openMenuSelection() {
-    this.menuSelectionIsOpen= !this.menuSelectionIsOpen;
+    this.firebase.menuSelectionIsOpen = !this.firebase.menuSelectionIsOpen;
+    if (!this.logOutOben) {
+      this.lockOutIsOben();
+    }
+    this.lockOutIsOben();
+    console.log(' mesnu ist auf ', this.firebase.menuSelectionIsOpen);
+
   }
 
 }

@@ -19,7 +19,7 @@
 
 
         </div>
-        <div class="menu-selection" [class.menu-selection-open]="menuSelectionIsOpen">
+        <div class="menu-selection" [class.menu-selection-open]="this.firebase.menuSelectionIsOpen">
             <div class="menu" (click)="openDialogNewUsers()" *ngIf="showHeader">Neuen Kunde einfügen</div>
             <div class="menu" (click)="openDialogNewAirConditioning()" *ngIf="showHeader">Klimaanlage einfügen</div>
             <div class="menu" *ngIf="initials" (click)="lockOutIsOben()">

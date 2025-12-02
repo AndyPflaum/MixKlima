@@ -35,10 +35,20 @@
     </p>
     <p><strong>Vom Büro gelesen:</strong> {{ customer.read ? 'Ja' : 'Nein' }}</p>
 
-    @if (!isOfficeView) {
+    @if (!isOfficeView && !customer.read) {
     <button matFab aria-label="Example icon button with a delete icon">
       <mat-icon (click)="openDeleteDialog(customer, $event)">delete</mat-icon>
     </button>
+
+    }
+
+    @if (isOfficeView && customer.read) {
+    <button matFab aria-label="Example icon button with a delete icon">
+      <mat-icon (click)="openDeleteDialog(customer, $event)">delete</mat-icon>
+    </button>
+
+
+
     }
 
   </div>

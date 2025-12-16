@@ -1,0 +1,65 @@
+section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: clamp(20px, 5vw, 40px);
+    margin: 0 clamp(16px, 5vw, 40px);
+
+
+    font-size: clamp(16px, 2.5vw, 22px); // 👈 Textgröße automatisch
+
+    h2 {
+        font-size: clamp(22px, 4vw, 28px); // 👈 Überschrift automatisch
+    }
+
+    .imprint,
+    .data-protection {
+        max-width: 600px;
+    }
+
+    button {
+        position: relative;
+        background-color: blue;
+        padding: 20px 30px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 24px;
+        cursor: pointer;
+        color: white;
+        overflow: hidden;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -50%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(120deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.4),
+                    transparent);
+            transform: skewX(-20deg);
+        }
+
+        &:hover::after {
+            animation: shine 0.8s ease;
+        }
+    }
+
+    @keyframes shine {
+        from {
+            left: -50%;
+        }
+
+        to {
+            left: 150%;
+        }
+    }
+
+
+
+}

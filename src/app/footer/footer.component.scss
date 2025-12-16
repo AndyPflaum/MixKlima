@@ -1,0 +1,19 @@
+section {
+  background-color: blue;
+  height: 50px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  span {
+    color: white;
+    font-size: 16px;
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      transform: scale(1.25);
+      color: rgb(233, 126, 126);
+    }
+  }
+}

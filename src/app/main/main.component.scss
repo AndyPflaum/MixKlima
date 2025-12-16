@@ -3,12 +3,8 @@ section {
     display: flex;
     flex-direction: column;
     background-color: rgb(253, 247, 247);
-
-    // app-header {
-    //     // height: 80px; // z. B. feste Höhe für den Header
-    //     // flex-shrink: 0;
-    // }
-
+    max-width: 1440px;
+    margin: auto;
     .main-contant {
         flex: 1; // nimmt die restliche Höhe ein
         display: flex;

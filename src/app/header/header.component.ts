@@ -88,7 +88,6 @@ export class HeaderComponent implements OnInit {
     signOut(auth).then(() => {
       console.log('✅ Erfolgreich ausgeloggt');
       this.firebase.menuSelectionIsOpen = false;
-      this.openMenuSelection
       this.router.navigate(['/login']); // Zurück zur Login-Seite
     }).catch((error) => {
       console.error('❌ Fehler beim Ausloggen:', error);

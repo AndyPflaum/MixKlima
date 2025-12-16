@@ -5,6 +5,7 @@ import { SelectedOrderComponent } from './selected-order/selected-order.componen
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { authGuard } from './auth/auth.guard';
+import { ImprintAndDataProtectionComponent } from './imprint-and-data-protection/imprint-and-data-protection.component';
 
 export const routes: Routes = [
     {
@@ -24,7 +25,11 @@ export const routes: Routes = [
             { path: '', component: SelectedOrderComponent },
             { path: 'auftrag/:id', component: SelectedOrderComponent }
         ]
-    }
+    },
+    {
+        path: 'Datenschutz / Impressum',
+        component: ImprintAndDataProtectionComponent
+    },
 ];
 
 

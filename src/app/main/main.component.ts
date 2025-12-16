@@ -6,10 +6,11 @@ import { CustomerDate } from '../../model/customerData.class';
 import { FirebaseService } from '../firebase.service';
 import { RouterModule } from '@angular/router';
 import { NgClass } from '@angular/common';
+import { FooterComponent } from '../footer/footer.component';
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [AllOrdersComponent, HeaderComponent, RouterModule, NgClass],
+  imports: [AllOrdersComponent, HeaderComponent, RouterModule, NgClass,FooterComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })

@@ -2,6 +2,6 @@
   <p>Auftrag von {{data.vorname}} {{data.name}} löschen?</p>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button matButton (click)="onNoClick()">Nein</button>
-  <button matButton  cdkFocusInitial (click)="deleteOrder()">Ja</button>
+  <button class="not-deleat" matButton (click)="onNoClick()">Nein</button>
+  <button  class="delete"  cdkFocusInitial (click)="deleteOrder()">Ja</button>
 </mat-dialog-actions>

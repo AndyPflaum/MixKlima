@@ -47,6 +47,7 @@ export class DialogAddUserComponent {
   async save() {
     this.customerDate.brand = this.selectedAirconName;
     this.customerDate.model = this.selectedModel;
+    this.firebaseService.menuSelectionIsOpen = false;
 
     try {
       await this.firebaseService.saveCustomer(this.customerDate);

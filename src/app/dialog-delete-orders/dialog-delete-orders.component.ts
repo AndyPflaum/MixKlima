@@ -5,11 +5,12 @@ import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogModule, M
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FirebaseService } from '../firebase.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-dialog-delete-orders',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatDialogActions, MatDialogContent, MatDialogModule],
+  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatDialogActions, MatDialogContent, MatDialogModule,MatIconModule],
   templateUrl: './dialog-delete-orders.component.html',
   styleUrl: './dialog-delete-orders.component.scss'
 })
